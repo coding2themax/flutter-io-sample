@@ -26,12 +26,34 @@ class RandomWordsState extends State<RandomWords>{
   @override
   Widget build(BuildContext context){
     return new Scaffold(
-      appBar: new AppBar(title: new Text("start up generator",textAlign:TextAlign.center,),),
+      appBar: new AppBar(title: new Text("start up generator",textAlign:TextAlign.center,)
+      ,actions: <Widget>[new IconButton(icon: new Icon(Icons.list),onPressed: _pushedSaved,)],),
+      
       body: _buildSuggestions(),
 
     );
   }
 
+ void _pushedSaved(){
+    Navigator.of(context).push(
+      new MaterialPageRoute(
+        builder: (context) {
+          final tiles = _saved.map(
+            (pair){return new ListTile(
+              title: new Text(pair.asPascalCase, style: _biggerFont,
+              ),
+            );
+            },
+          );
+          final devided = ListTile.divideTiles(context: context,tiles: tiles,).toList();
+          return new Scaffold(appBar: new AppBar(title: new Text("Saved Suggestions"),
+          ),
+          body: new ListView(children: devided,),)
+          ; 
+        },
+      ),
+    );  
+ }
   Widget _buildSuggestions(){
     return new ListView.builder(
       padding: const EdgeInsets.all(17.0),
